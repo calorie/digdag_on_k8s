@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: digdag-master
+  labels:
+    app: digdag-master
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: digdag-master
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: digdag-master
+    spec:
+      volumes:
+      - name: digdag-config-volume
+        configMap:
+          name: digdag-config
+      containers:
+      - name: digdag-master
+        image: 'digdag_on_k8s_master:latest'
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: digdag-config-volume
+          mountPath: /etc/config
+        command: ['/bin/bash']
+        args:
+        - '-cx'
+        - |
+          digdag server \
+          --config /etc/config/digdag.properties \
+          -X server.bind=0.0.0.0 \
+          -X server.port=8080 \
+          -X database.type=postgresql \
+          -X database.host=db \
+          -X database.port=5432 \
+          -X database.user=$POSTGRES_USER \
+          -X database.database=digdag \
+          -X database.password=$POSTGRES_PASSWORD \
+          -X digdag.secret-encryption-key=$SECRET_ENCRYPTION_KEY
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: digdag-secret
+              key: db_user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: digdag-secret
+              key: db_password
+        - name: SECRET_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: digdag-secret
+              key: secret_encryption_key
+        ports:
+        - containerPort: 8080
+          protocol: TCP
