@@ -1,1 +1,5 @@
 /k8s/digdag-config/secrets.properties
+
+/workflow/.digdag-wrapper
+.digdag
+*.pyc

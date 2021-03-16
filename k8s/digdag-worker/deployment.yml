@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: digdag-master
+  name: digdag-worker
   labels:
-    app: digdag-master
+    app: digdag-worker
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: digdag-master
+      app: digdag-worker
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: digdag-master
+        app: digdag-worker
     spec:
       volumes:
       - name: digdag-config-volume
         configMap:
           name: digdag-config
       containers:
-      - name: digdag-master
-        image: 'digdag_on_k8s_master:latest'
+      - name: digdag-worker
+        image: 'digdag_on_k8s_worker:latest'
         imagePullPolicy: IfNotPresent
         volumeMounts:
         - name: digdag-config-volume
@@ -32,9 +32,6 @@ spec:
         - '-cx'
         - |
           digdag server \
-          --disable-local-agent \
-          --disable-scheduler \
-          --disable-executor-loop \
           --config /etc/config/digdag.properties \
           -X server.bind=0.0.0.0 \
           -X server.port=8080 \
