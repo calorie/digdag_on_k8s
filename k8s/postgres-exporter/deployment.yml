@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-exporter
+spec:
+  selector:
+    matchLabels:
+      app: postgres-exporter
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres-exporter
+      name: postgres-exporter
+    spec:
+      volumes:
+      - name: config
+        configMap:
+          name: postgres-exporter-config-map
+      containers:
+      - name: postgres-exporter
+        image: quay.io/prometheuscommunity/postgres-exporter
+        env:
+        - name: DATA_SOURCE_URI
+          valueFrom:
+            secretKeyRef:
+              name: digdag-secret
+              key: data_source_uri
+        - name: DATA_SOURCE_USER
+          valueFrom:
+            secretKeyRef:
+              name: digdag-secret
+              key: db_user
+        - name: DATA_SOURCE_PASS
+          valueFrom:
+            secretKeyRef:
+              name: digdag-secret
+              key: db_password
+        args:
+        - '--disable-default-metrics'
+        - '--disable-settings-metrics'
+        - '--extend.query-path=/config/queries.yaml'
+        - '--log.level=debug'
+        ports:
+        - containerPort: 9187
+        volumeMounts:
+        - name: config
+          readOnly: true
+          mountPath: /config

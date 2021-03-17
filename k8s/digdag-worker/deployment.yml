@@ -58,6 +58,3 @@ spec:
             secretKeyRef:
               name: digdag-secret
               key: secret_encryption_key
-        ports:
-        - containerPort: 8080
-          protocol: TCP

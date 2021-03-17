@@ -16,6 +16,9 @@ spec:
       containers:
       - image: postgres:13.2
         name: db
+        args:
+        - -c
+        - max_connections=256
         env:
         - name: POSTGRES_USER
           valueFrom:
