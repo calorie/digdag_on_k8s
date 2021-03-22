@@ -4,9 +4,9 @@ metadata:
   name: postgres-exporter-config-map
 data:
   queries.yaml: |+
-    pg_postmaster:
+    pg_exporter:
       query: "SELECT count(1) AS queued_tasks FROM tasks"
       metrics:
         - queued_tasks:
-            usage: "COUNTER"
+            usage: "GAUGE"
             description: "Number of tasks in queue"

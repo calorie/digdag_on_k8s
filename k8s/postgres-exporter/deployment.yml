@@ -43,6 +43,7 @@ spec:
         - '--log.level=debug'
         ports:
         - containerPort: 9187
+          name: exporter
         volumeMounts:
         - name: config
           readOnly: true

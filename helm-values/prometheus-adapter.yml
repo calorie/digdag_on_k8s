@@ -1,0 +1,15 @@
+rules:
+  default: false
+  custom:
+  - seriesQuery: 'pg_exporter_queued_tasks{namespace!="",service!=""}'
+    resources:
+      overrides:
+        namespace:
+          resource: namespace
+        service:
+          resource: service
+    name:
+      as: queued_tasks
+    metricsQuery: '<<.Series>>{<<.LabelMatchers>>}'
+prometheus:
+  url: http://prometheus-operator-kube-p-prometheus.default
