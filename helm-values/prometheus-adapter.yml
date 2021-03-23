@@ -13,3 +13,4 @@ rules:
     metricsQuery: '<<.Series>>{<<.LabelMatchers>>}'
 prometheus:
   url: http://prometheus-operator-kube-p-prometheus.default
+logLevel: 2
