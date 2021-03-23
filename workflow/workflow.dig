@@ -17,6 +17,9 @@ timezone: UTC
     echo>: ${order} ${animal}
   _parallel: true
 
+# +sleep:
+#   sh>: sleep 10
+
 +teardown:
   echo>: finish ${session_time}
 
