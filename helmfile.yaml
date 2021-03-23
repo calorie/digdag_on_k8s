@@ -1,0 +1,12 @@
+repositories:
+- name: prometheus-community
+  url: https://prometheus-community.github.io/helm-charts
+releases:
+  - name: prometheus-operator
+    chart: prometheus-community/kube-prometheus-stack
+    values:
+      - helm-values/prometheus-operator.yml
+  - name: prometheus-adapter
+    chart: prometheus-community/prometheus-adapter
+    values:
+      - helm-values/prometheus-adapter.yml
