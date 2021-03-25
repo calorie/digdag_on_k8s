@@ -20,6 +20,9 @@ spec:
       - name: digdag-config-volume
         configMap:
           name: digdag-config
+      - name: embulk-config-volume
+        configMap:
+          name: embulk-config
       containers:
       - name: digdag-worker
         image: 'digdag_on_k8s_worker:latest'
@@ -27,6 +30,8 @@ spec:
         volumeMounts:
         - name: digdag-config-volume
           mountPath: /etc/config
+        - name: embulk-config-volume
+          mountPath: /embulk
         command: ['/bin/bash']
         args:
         - '-cx'

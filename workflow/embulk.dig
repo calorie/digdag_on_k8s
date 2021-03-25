@@ -1,0 +1,4 @@
+timezone: UTC
+
++embulk:
+  sh>: kube-job run --template-file=/embulk/embulk.yml --container='embulk'

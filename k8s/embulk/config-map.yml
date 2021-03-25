@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: embulk-config
+  namespace: default
+data:
+  embulk.yml: |+
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: embulk
+      namespace: default
+      labels:
+        app: embulk
+    spec:
+      template:
+        metadata:
+          labels:
+            app: embulk
+        spec:
+          containers:
+          - name: embulk
+            image: 'digdag_on_k8s_embulk:latest'
+            command: ['embulk', '--version']
+          restartPolicy: Never
+      backoffLimit: 2

@@ -2,7 +2,10 @@ version: "3"
 services:
   master:
     build:
-      context: docker/digdag
+      context: docker/digdag-master
   worker:
     build:
-      context: docker/digdag
+      context: docker/digdag-worker
+  embulk:
+    build:
+      context: docker/embulk
