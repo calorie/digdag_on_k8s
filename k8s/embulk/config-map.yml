@@ -21,6 +21,7 @@ data:
           containers:
           - name: embulk
             image: 'digdag_on_k8s_embulk:latest'
-            command: ['embulk', '--version']
+            imagePullPolicy: Never
+            args: ['embulk', '--version']
           restartPolicy: Never
       backoffLimit: 2
